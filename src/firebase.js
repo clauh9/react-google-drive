@@ -20,4 +20,13 @@ const projectFirestore = firebase.firestore();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 const auth = firebase.auth();
 
+export const database = {
+	folders: projectFirestore.collection("folders"),
+	files: projectFirestore.collection("files"),
+	timestamp: timestamp,
+	formatDoc: (doc) => {
+		return { id: doc.id, ...doc.data() };
+	},
+};
+
 export { app, projectFirestore, projectStorage, timestamp, auth };

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Card, Button, Col, Row, Form, Alert } from "react-bootstrap";
-import { useAuthContext } from "../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Card, Button, Form, Alert } from "react-bootstrap";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
+import ContainerCenter from "./ContainerCenter";
 
 const ForgotPassword = () => {
 	const emailRef = useRef();
@@ -9,7 +10,6 @@ const ForgotPassword = () => {
 	const [error, setError] = useState("");
 	const [sent, setSent] = useState(false);
 	const [loading, setLoading] = useState("");
-	const history = useNavigate();
 
 	async function handleSubmit(e) {
 		e.preventDefault();
@@ -19,16 +19,15 @@ const ForgotPassword = () => {
 			setLoading(true);
 			await resetPasswd(emailRef.current.value);
 			setSent(true);
-			// history("/login");
 		} catch (error) {
-			setError("If you have an account an email with be sent");
+			setError("Error sending email");
 		}
 
 		setLoading(false);
 	}
 
 	return (
-		<div>
+		<ContainerCenter>
 			<Card>
 				<Card.Body>
 					<h2 className="text-center mb-3">Log in</h2>
@@ -63,7 +62,7 @@ const ForgotPassword = () => {
 			<div className="w-100 text-center mt-2">
 				Already have an account? <Link to="/login">Log in</Link>
 			</div>
-		</div>
+		</ContainerCenter>
 	);
 };
 

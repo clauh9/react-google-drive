@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase.js";
+import Spinner from "react-bootstrap/Spinner";
 
 const AuthContext = createContext({});
 
@@ -33,7 +34,13 @@ const AuthProvider = ({ children }) => {
 	}, []);
 
 	if (pending) {
-		return <>Loading...</>;
+		return (
+			<div className="overlay d-flex justify-content-center align-items-center">
+				<Spinner animation="border" role="status" variant="primary">
+					<span className="visually-hidden">Loading...</span>
+				</Spinner>
+			</div>
+		);
 	}
 
 	const value = {
