@@ -1,3 +1,8 @@
 .overlay {
 	height: 100vh;
 }
+
+/* changes from / to > */
+.breadcrumb-item + .breadcrumb-item::before {
+	content: ">" !important;
+}

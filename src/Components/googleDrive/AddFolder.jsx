@@ -38,7 +38,7 @@ const AddFolder = ({ currentFolder }) => {
 	return (
 		<>
 			<Button onClick={handleShow} variant="outline-success" size="sm">
-				<FolderPlus size={25} />
+				<FolderPlus size={18} />
 			</Button>
 
 			<Modal show={show} onHide={handleClose}>

@@ -18,12 +18,15 @@ const Dashboard = () => {
 	);
 
 	return (
-		<>
+		<div className="">
 			<NavComponent />
-			<Container fluid>
-				<FolderBreadcrumbs currentFolder={folder} />
-				<AddFolder currentFolder={folder} />
-				<AddFile />
+			<Container fluid className="pt-3">
+				<div className="d-flex align-items-center ">
+					<FolderBreadcrumbs currentFolder={folder} />
+					<AddFolder currentFolder={folder} />
+					<div className="px-1"></div>
+					<AddFile currentFolder={folder} />
+				</div>
 
 				{childFolders.length > 0 && (
 					<div className="d-flex flex-wrap">
@@ -67,7 +70,7 @@ const Dashboard = () => {
 					</div>
 				)} */}
 			</Container>
-		</>
+		</div>
 	);
 };
 

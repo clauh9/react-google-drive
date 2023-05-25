@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import { FileEarmarkPlus } from "react-bootstrap-icons";
-const AddFile = () => {
+import { FileEarmarkPlus, ThreeDotsVertical } from "react-bootstrap-icons";
+
+const AddFile = ({ currentFolder }) => {
 	const [show, setShow] = useState(false);
-	const fileNameRef = useRef();
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -11,7 +11,7 @@ const AddFile = () => {
 	return (
 		<>
 			<Button onClick={handleShow} variant="outline-success" size="sm">
-				<FileEarmarkPlus size={25} />
+				<FileEarmarkPlus size={18} />
 			</Button>
 
 			<Modal show={show} onHide={handleClose}>
@@ -20,7 +20,7 @@ const AddFile = () => {
 				</Modal.Header>
 				<Modal.Body>
 					<Form.Group controlId="formFile" className="mb-3">
-						<Form.Control type="file" ref={fileNameRef} />
+						<Form.Control type="file" />
 					</Form.Group>
 				</Modal.Body>
 				<Modal.Footer>
