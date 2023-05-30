@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 
 const NavComponent = () => {

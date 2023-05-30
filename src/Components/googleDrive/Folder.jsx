@@ -5,8 +5,6 @@ import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { Folder as F, ThreeDotsVertical } from "react-bootstrap-icons";
 
 const Folder = ({ folder }) => {
-	// Deletes the folder from Firebase
-
 	const deleteFolder = (e) => {
 		e.preventDefault();
 

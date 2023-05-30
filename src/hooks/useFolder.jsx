@@ -93,6 +93,7 @@ export function useFolder(folderId = null, folder = null) {
 			});
 	}, [folderId, currentUser]);
 
+	//file related
 	useEffect(() => {
 		return database.files
 			.where("folderId", "==", folderId)

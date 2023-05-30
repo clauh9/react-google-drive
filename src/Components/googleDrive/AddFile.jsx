@@ -1,37 +1,61 @@
-import React, { useRef, useState } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import React from "react";
+import { projectStorage, database } from "../../firebase";
 import { FileEarmarkPlus, ThreeDotsVertical } from "react-bootstrap-icons";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { ROOT_FOLDER } from "../../hooks/useFolder";
 
 const AddFile = ({ currentFolder }) => {
-	const [show, setShow] = useState(false);
+	const { currentUser } = useAuthContext();
 
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleUpload = (e) => {
+		const file = e.target.files[0];
+		if (currentFolder == null || file == null) {
+			return;
+		}
+		const filePath =
+			currentFolder === ROOT_FOLDER
+				? `${currentFolder.path.join("/")}/${file.name}`
+				: `${currentFolder.path.join("/")}/${currentFolder.name}/${file.name}`;
 
+		const uploadTask = projectStorage
+			.ref(`/files/${currentUser.uid}/${file.name}`)
+			.put(file);
+
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {},
+			() => {},
+			() => {
+				uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+					// console.log(url);
+					database.files.add({
+						userId: currentUser.uid,
+						folderId: currentFolder.id,
+						url: url,
+						name: file.name,
+						createdAt: database.timestamp(),
+					});
+				});
+			}
+		);
+	};
+	const now = 60;
 	return (
 		<>
-			<Button onClick={handleShow} variant="outline-success" size="sm">
+			{/* <Button onClick={handleShow} variant="outline-success" size="sm"> */}
+			<label className="btn btn-outline-success btn-sm">
 				<FileEarmarkPlus size={18} />
-			</Button>
-
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Pick a file to upload</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Form.Group controlId="formFile" className="mb-3">
-						<Form.Control type="file" />
-					</Form.Group>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={handleClose}>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-			</Modal>
+				<input
+					type="file"
+					onChange={handleUpload}
+					style={{
+						opacity: 0,
+						position: "absolute",
+						left: "-9999px",
+					}}
+				/>
+			</label>
+			{/* </Button> */}
 		</>
 	);
 };
