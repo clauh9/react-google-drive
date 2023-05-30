@@ -5,7 +5,7 @@ import AddFolder from "./AddFolder";
 import AddFile from "./AddFile";
 import Folder from "./Folder";
 import { useFolder } from "../../hooks/useFolder";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import FolderBreadcrumbs from "./FolderBreadcrumbs ";
 import File from "./File";
 

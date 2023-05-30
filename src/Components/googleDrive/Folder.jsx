@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { database } from "../../firebase";
+import { database, projectStorage } from "../../firebase";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { Folder as F, ThreeDotsVertical } from "react-bootstrap-icons";
 
@@ -10,9 +10,11 @@ const Folder = ({ folder }) => {
 
 		deleteChildFolders(folder.id, folder.userId); // Delete child folders recursively
 
+		deleteChildFiles(folder.id, folder.userId); //delete  current folder files
 		database.folders.doc(folder.id).delete(); // Delete the current folder
 	};
 
+	//to delete nested folders
 	const deleteChildFolders = (parentId, userId) => {
 		database.folders
 			.where("parentId", "==", parentId)
@@ -21,12 +23,29 @@ const Folder = ({ folder }) => {
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					const folderId = doc.id;
-					deleteChildFolders(folderId, userId); // Pass the userId to the function
+					deleteChildFiles(folderId, userId);
+					deleteChildFolders(folderId, userId);
 					database.folders.doc(folderId).delete(); // Delete the child folder
 				});
 			})
 			.catch((error) => {
 				console.error("Error deleting child folders:", error);
+			});
+	};
+
+	//to deleted files inside nested folders
+	const deleteChildFiles = async (folderId, userId) => {
+		await database.files
+			.where("folderId", "==", folderId)
+			.where("userId", "==", userId)
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach(async (doc) => {
+					const fileDoc = await database.files.doc(doc.id).get();
+
+					await database.files.doc(doc.id).delete(); // Delete the current file from Firestore
+					await projectStorage.refFromURL(fileDoc.data().url).delete(); // Delete the current file from storage
+				});
 			});
 	};
 
