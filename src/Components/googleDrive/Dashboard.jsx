@@ -5,16 +5,13 @@ import AddFolder from "./AddFolder";
 import AddFile from "./AddFile";
 import Folder from "./Folder";
 import { useFolder } from "../../hooks/useFolder";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import FolderBreadcrumbs from "./FolderBreadcrumbs ";
 import File from "./File";
 
 const Dashboard = () => {
 	const { folderId } = useParams();
-	const { folder, childFolders, childFiles } = useFolder(
-		folderId
-		// state.folder
-	);
+	const { folder, childFolders, childFiles } = useFolder(folderId);
 
 	return (
 		<div className="">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
+import logo from "/Google.png";
 
 const NavComponent = () => {
 	const { currentUser, logout } = useAuthContext();
@@ -24,7 +25,7 @@ const NavComponent = () => {
 			<Navbar.Brand href="/" className="mx-3">
 				<img
 					alt=""
-					src="/src/images/Google.png"
+					src={logo}
 					width="30"
 					height="30"
 					className="d-inline-block align-top"

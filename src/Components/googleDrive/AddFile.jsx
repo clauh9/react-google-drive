@@ -1,6 +1,6 @@
 import React from "react";
 import { projectStorage, database } from "../../firebase";
-import { FileEarmarkPlus, ThreeDotsVertical } from "react-bootstrap-icons";
+import { FileEarmarkPlus } from "react-bootstrap-icons";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { ROOT_FOLDER } from "../../hooks/useFolder";
 
@@ -28,18 +28,31 @@ const AddFile = ({ currentFolder }) => {
 			() => {
 				uploadTask.snapshot.ref.getDownloadURL().then((url) => {
 					// console.log(url);
-					database.files.add({
-						userId: currentUser.uid,
-						folderId: currentFolder.id,
-						url: url,
-						name: file.name,
-						createdAt: database.timestamp(),
-					});
+					database.files
+						.where("name", "==", file.name)
+						.where("userId", "==", currentUser.uid)
+						.where("folderId", "==", currentFolder.id)
+						.get()
+						.then((getFiles) => {
+							const getFile = getFiles.docs[0];
+							if (getFile) {
+								getFile.ref.update({ url: url });
+							} else {
+								//everything before this handles duplicates
+								database.files.add({
+									userId: currentUser.uid,
+									folderId: currentFolder.id,
+									url: url,
+									name: file.name,
+									createdAt: database.timestamp(),
+								});
+							}
+						});
 				});
 			}
 		);
 	};
-	const now = 60;
+
 	return (
 		<>
 			{/* <Button onClick={handleShow} variant="outline-success" size="sm"> */}
