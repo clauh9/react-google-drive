@@ -47,6 +47,7 @@ export function useFolder(folderId = null, folder = null) {
 		childFolders: [],
 		childFiles: [],
 	});
+
 	const { currentUser } = useAuthContext();
 
 	useEffect(() => {
@@ -55,6 +56,7 @@ export function useFolder(folderId = null, folder = null) {
 
 	useEffect(() => {
 		if (folderId == null) {
+			//then we are at the root, MyDrive
 			return dispatch({
 				type: ACTIONS.UPDATE_FOLDER,
 				payload: { folder: ROOT_FOLDER },
@@ -92,18 +94,16 @@ export function useFolder(folderId = null, folder = null) {
 	}, [folderId, currentUser]);
 
 	useEffect(() => {
-		return (
-			database.files
-				.where("folderId", "==", folderId)
-				.where("userId", "==", currentUser.uid)
-				// .orderBy("createdAt")
-				.onSnapshot((snapshot) => {
-					dispatch({
-						type: ACTIONS.SET_CHILD_FILES,
-						payload: { childFiles: snapshot.docs.map(database.formatDoc) },
-					});
-				})
-		);
+		return database.files
+			.where("folderId", "==", folderId)
+			.where("userId", "==", currentUser.uid)
+			.orderBy("createdAt")
+			.onSnapshot((snapshot) => {
+				dispatch({
+					type: ACTIONS.SET_CHILD_FILES,
+					payload: { childFiles: snapshot.docs.map(database.formatDoc) },
+				});
+			});
 	}, [folderId, currentUser]);
 
 	return state;

@@ -3,28 +3,27 @@ import { Link } from "react-router-dom";
 import { database } from "../../firebase";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { Folder as F, ThreeDotsVertical } from "react-bootstrap-icons";
-import deleteFolders from "../utils/deleteFolders";
 
 const Folder = ({ folder }) => {
 	// Deletes the folder from Firebase
 
 	const deleteFolder = (e) => {
 		e.preventDefault();
-		const parentId = folder.parentId; // Get the parent folder's ID
 
-		// deleteChildFolders(folder.id); // Delete child folders recursively
+		deleteChildFolders(folder.id, folder.userId); // Delete child folders recursively
 
 		database.folders.doc(folder.id).delete(); // Delete the current folder
 	};
 
-	const deleteChildFolders = (parentId) => {
+	const deleteChildFolders = (parentId, userId) => {
 		database.folders
 			.where("parentId", "==", parentId)
+			.where("userId", "==", userId) // Check userId in the query
 			.get()
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					const folderId = doc.id;
-					deleteChildFolders(folderId); // Recursively delete child folders
+					deleteChildFolders(folderId, userId); // Pass the userId to the function
 					database.folders.doc(folderId).delete(); // Delete the child folder
 				});
 			})
