@@ -23,7 +23,14 @@ const File = ({ file }) => {
 
 	const renderFileContent = () => {
 		if (IMG.includes(type)) {
-			return <Card.Img variant="top" src={file.url} className="card-img-top" />;
+			return (
+				<Card.Img
+					variant="top"
+					src={file.url}
+					className="card-img-top"
+					alt="img"
+				/>
+			);
 		} else if (TXT.includes(type)) {
 			return <FileEarmarkWord />;
 		} else if (PDF.includes(type)) {

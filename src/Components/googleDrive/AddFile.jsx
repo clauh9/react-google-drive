@@ -58,7 +58,11 @@ const AddFile = ({ currentFolder }) => {
 			{/* <Button onClick={handleShow} variant="outline-success" size="sm"> */}
 			<label className="btn btn-outline-success btn-sm">
 				<FileEarmarkPlus size={18} />
+				<label htmlFor="upload-file" hidden>
+					Upload File
+				</label>
 				<input
+					id="upload-file"
 					type="file"
 					onChange={handleUpload}
 					style={{

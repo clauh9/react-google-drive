@@ -47,6 +47,7 @@ const AddFolder = ({ currentFolder }) => {
 						<Modal.Title>Create a new folder</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
+						<Form.Label hidden>Input for folder name</Form.Label>
 						<Form.Control
 							type="text"
 							placeholder="Folder name"
