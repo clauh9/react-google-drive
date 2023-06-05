@@ -49,22 +49,22 @@ const File = ({ file }) => {
 
 	return (
 		<Col sm={12} className="mb-4">
-			<Card className="h-100 d-flex flex-column">
+			<Card className="">
 				{renderFileContent()}
-				<Card.Body className="flex-grow-1">
-					<Card.Title>
+				<Card.Body className="d-flex align-items-center">
+					<Card.Title className="text-truncate w-100">
 						<Card.Link href={file.url} target="_blank">
 							{file.name}
 						</Card.Link>
-						<OverlayTrigger
-							trigger="click"
-							placement="bottom"
-							overlay={popover}
-							rootClose //so it closes when you click somewhere else
-						>
-							<ThreeDotsVertical onClick={(e) => e.preventDefault()} />
-						</OverlayTrigger>
 					</Card.Title>
+					<OverlayTrigger
+						trigger="click"
+						placement="bottom"
+						overlay={popover}
+						rootClose //so it closes when you click somewhere else
+					>
+						<ThreeDotsVertical onClick={(e) => e.preventDefault()} />
+					</OverlayTrigger>
 				</Card.Body>
 			</Card>
 		</Col>
